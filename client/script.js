@@ -11,7 +11,7 @@
 
 // CODE HERE
 
-let sayHelloButton = document.querySelector()
+let sayHelloButton = document.querySelector('#say-hello-button')
 
 // PROBLEM 2
 /*
@@ -21,7 +21,15 @@ let sayHelloButton = document.querySelector()
 */
 
 // CODE HERE
+const styles = document.querySelector('style')
+styles.textContent = styles.textContent + '.changeColor {background-color: black; color: white} .origColor {background-color: #EFEFEF; color: black}'
 
+function changeColor(event) {
+    event.preventDefault()
+    event.target.classList.add('changeColor')
+}
+
+sayHelloButton.addEventListener('mouseover', changeColor)
 
 // PROBLEM 3
 /*
@@ -34,6 +42,14 @@ let sayHelloButton = document.querySelector()
 
 // CODE HERE
 
+
+function changeBack(event) {
+    event.preventDefault()
+    event.target.classList.remove('changeColor')
+    // event.target.classList.add('origColor')
+}
+
+sayHelloButton.addEventListener('mouseout', changeBack)
 
 // PROBLEM 4
 /*
@@ -54,7 +70,7 @@ const sayHello = () => {
 // DO NOT EDIT FUNCTION
 
 // CODE HERE
-
+sayHelloButton.addEventListener('click', sayHello)
 
 // PROBLEM 5 
 /*
@@ -67,8 +83,23 @@ const sayHello = () => {
     Handle the promise that's returned with a .then, which you should pass a callback function to. Inside the callback function, console.log the response's data (in the intermediate instructions we'll come back to this function and add HTML).
 */ 
 
-const ohMy = () => {
+const baseUrl = 'http://localhost:3000'
+
+const ohMy = (event) => {
     // YOUR CODE HERE
+    axios.get('http://localhost:3000/animals')
+    .then((response) => {
+        // console.log(response.data)
+        const docBody = document.querySelector('body')
+        for (let i = 0; i < response.data.length; i++) {
+            const newP = document.createElement('p')
+            newP.textContent = response.data[i]
+            docBody.appendChild(newP)
+        }
+    })
+    .catch((error) => {
+        console.log(error)
+    })
 }
 
 document.getElementById('animals-button').addEventListener('click', ohMy)
@@ -89,7 +120,20 @@ document.getElementById('animals-button').addEventListener('click', ohMy)
 
 const repeatMyParam = () => {
     //YOUR CODE HERE
+    axios.get('http://localhost:3000/repeat/' + 'param')
+    .then((response) => {
+        console.log(response)
+        const repeatText = document.querySelector('#repeat-text')
+        repeatText.textContent = response.data
+        repeatText.style.display = 'block'
+    })
+    .catch((error) => {
+        console.log(error)
+    })  
 }
+
+let repeatbtn = document.querySelector('#repeat-button')
+repeatbtn.addEventListener('click', repeatMyParam)
 
 // PROBLEM 7
 /*
@@ -115,6 +159,18 @@ const repeatMyParam = () => {
 
 // CODE HERE
 
+function queryChoice () {
+    axios.get('http://localhost:3000/query-test/?x=1&y=2')
+    .this((response) => {
+        console.log(response.data)
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+}
+
+const queryBtn = document.querySelector('#query-button')
+queryBtn.addEventListener('click', queryChoice)
 
 
 ////////////////
